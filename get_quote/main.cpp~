@@ -1,0 +1,20 @@
+#include <iostream>
+#include "quote.h"
+
+int main(int argc, const char * argv[]) {
+     // all Yahoo! Finance quote types are implemented (this is just a sample)
+    std::string petr4Quotes = quote::getLatestQuotesCsv("MSFT", {quote::QuoteType::symbol,
+                                                                     quote::QuoteType::name,
+                                                                     quote::QuoteType::lastTradePriceOnly,
+                                                                     quote::QuoteType::lastTradeDate,
+                                                                     quote::QuoteType::lastTradeTime});
+    std::cout << petr4Quotes << std::endl;
+    // quote ranges can be daily, weekly, monthly, or dividends only
+    std::string petr4HistoricalPrices = quote::getHistoricalQuotesCsv("GOOG",
+                                                                      2014, 4, 2,
+                                                                      2014, 4, 7,
+                                                                      quote::RangeType::daily);
+    std::cout << petr4HistoricalPrices << std::endl;
+
+    return 0;
+}

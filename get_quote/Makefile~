@@ -1,0 +1,13 @@
+object = get_quote
+cc = g++
+source = main.cpp
+option = -g -pthread -std=c++11
+CFLAGS = -I/usr/local/include -I/usr/local/include/quote -L/usr/local/lib -lquote -lcurl
+
+all: set_env_var get_quote 
+
+set_env_var:
+	LD_LIBRARY_PATH=/usr/local/lib;export LD_LIBRARY_PATH
+
+get_quote: $(source)
+	$(cc) $(option) $(source) $(CFLAGS) -o $(object) 

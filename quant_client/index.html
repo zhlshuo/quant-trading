@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/highstock.js"></script>
+<!--script src="./js/highcharts.js"></script-->
+<script src="./js/modules/exporting.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/index.css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Money Printer</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div id="content" class="row">
+	<div class="text-center col-sm-1"></div>
+
+	<div class="text-left col-sm-3">		
+		<form class="form-inline">
+			<div class="row">
+				<div class="col-sm-4 text-left" style="padding-top:8px"><label for="ticker">Ticker:</label></div>
+				<div class="col-sm-2 text-right"><select id="tickers_select" class="form-control" data-style="btn-info" style="width:165px"></select></div>
+			</div>
+			
+			<div class="row" style="margin-top:15px">
+				<div class="col-sm-4 text-left" style="padding-top:8px"><label for="trading_book">Trading Book:</label></div>
+				<div class="col-sm-2 text-right"><select id="trading_books_select" class="form-control" data-style="btn-info" style="width:165px"></select></div>
+			</div>
+			
+			<div class="row" style="margin-top:15px">
+                                <div class="col-sm-4 text-left" style="padding-top:8px"><label for="customer_book">Customer Book:</label></div>
+				<div class="col-sm-2 text-right"><select id="customer_books_select" class="form-control" data-style=a"btn-info" style="width:165px"></select></div>
+                        </div>
+
+			<div class="row" style="margin-top:15px">
+                                <div class="col-sm-4 text-left" style="padding-top:8px"><label for="quantity">Quantity:</label></div>
+                                <div class="col-sm-2 text-right"><input id="quantity" class="form-control" data-style=a"btn-info" style="width:165px"></input></div>
+                        </div>
+			
+			<div class="row" style="margin-top:15px;height:20px;">
+                                <div class="col-sm-8 text-left" style="padding-top:8px"><label id='quant_err_msg' color='red' style="display:none">Quantity should be a number!</label></div>
+                        </div>
+
+			<div class="row" style="margin-top:15px">
+				<div class="col-sm-4 text-left" style="padding-top:8px">
+					<button id="book_trade" type="button" class="btn btn-primary" style="margin-top:25px;clear:both">Book</button>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top:15px;height:20px;">
+                                <div class="col-sm-8 text-left" style="padding-top:8px"><label id='booking_feedback'></label></div>
+                        </div>
+
+			<div class="row" style="margin-top:35px">
+                                <div class="col-sm-4 text-left" style="padding-top:8px"><label for="trading_book">Deals in Book:</label></div>
+                                <div class="col-sm-2 text-right"><select id="trading_books_for_deals_select" class="form-control" data-style="btn-info" style="width:165px"></select></div>
+                        </div>
+
+			<div class="row" style="margin-top:15px">
+				<table id="deals_table" class="table">
+					<thead><tr><th>Ticker</th><th>Quantity</th><th>Date</th></tr></thead>
+					<tbody></tbody>
+				</table>
+                        </div>
+
+		</form>
+	</div>
+
+	<div class="text-center col-sm-3">
+		<div class="row" style="margin-top:15px">
+                        <div class="col-sm-4 text-left" style="padding-top:8px"><label for="customer_book">Select Report:</label></div>
+                	<div class="col-sm-2 text-right"><select id="risk_report_select" class="form-control" data-style=a"btn-info" style="width:165px"></select></div>
+                </div>
+
+		<div class="row" style="margin-top:15px">
+                	<div class="col-sm-4 text-left" style="padding-top:8px"><label for="trading_book">Trading Book:</label></div>
+                        <div class="col-sm-2 text-right"><select id="risk_report_trading_books_select" class="form-control" data-style="btn-info" style="width:165px"></select></div>
+                </div>
+
+		<div class="row" style="margin-top:15px">
+                	<div class="col-sm-4 text-left" style="padding-top:8px">
+                        	<button id="run_risk_report" type="button" class="btn btn-primary" style="margin-top:25px;clear:both">Run</button>
+                        </div>
+                </div>
+		
+                <!--h3>Input</h3>
+                <textarea id="msg_input" rows="4" cols="50"></textarea-->
+                <h3>Report Output</h3>
+                <textarea id="report_output" rows="6" cols="50"></textarea>
+        </div>
+	
+	<div class="text-center col-sm-4">
+		<div id="price_chart"></div>
+	</div>
+
+	<div class="text-center col-sm-1"></div>
+</div>
+
+</body>
+</html>
+
