@@ -14,8 +14,9 @@
 #include <math/matrix.hpp>
 #include <numeric>
 #include <iostream>
-#include "debug.hpp"
+//#include "debug.hpp"
 #include "risk_report.hpp"
+#include "configuration.hpp"
 
 using namespace std;
 using namespace QuantLib;
@@ -23,6 +24,7 @@ using namespace QuantLib;
 class VarianceCovarianceVAR: public RiskReport
 {
 private:
+	bool debug;
 	Book book;
 	double confidence_level;
 	unordered_map<string, AssetEconomics> assets_economics;
@@ -138,6 +140,7 @@ public:
 		assets_economics = book.assets_economics();
 		this->days_look_back = days_look_back;
 		get_quotes();
+		debug = Configuration::get_instance()->debug;
 	}
 
 	unordered_map<string, double> get_risk_values()
