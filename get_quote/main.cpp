@@ -92,11 +92,11 @@ int main(int argc, const char * argv[]) {
         //long long start_date =  (now->tm_year + 1900) * 10000 + (now->tm_mon + 1) * 100 + now->tm_mday;
 	//long long end_date =  (now->tm_year + 1900) * 10000 + (now->tm_mon + 1) * 100 + now->tm_mday;
 
-	//long long start_date = stoll(argv[1]);
-        //long long end_date   = stoll(argv[2]);
+	long long start_date = stoll(argv[1]);
+        long long end_date   = stoll(argv[2]);
 	
-	long long start_date = 20040101;
-        long long end_date   = 20040106;
+	//long long start_date = 20150101;
+        //long long end_date   = 20161130;
 
         cout << start_date << " to " << end_date << endl;
 
