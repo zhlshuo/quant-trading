@@ -87,7 +87,8 @@ $(document).ready(function(){
                     		]);
             		}
 
-			CreateChart(ticker, data);	
+			CreatePriceChart(ticker, data);
+			CreatePriceChartWithTrend(ticker, data);	
 		}
 			
 	};
@@ -105,8 +106,8 @@ $(document).ready(function(){
         })
 
 
-	function CreateChart(ticker, data) {
-     		// create the chart
+	function CreatePriceChart(ticker, data) {
+     		// create price chart
      		$("#price_chart").highcharts("StockChart", {
 			title: {
 				text: ticker + " Stock Price"
@@ -127,6 +128,30 @@ $(document).ready(function(){
          		}]
      		});
  	}
+
+	function CreatePriceChartWithTrend(ticker, data) {
+                // create price chart
+                $("#price_chart_with_trend").highcharts("StockChart", {
+                        title: {
+                                text: ticker + " Stock Price With Trend"
+                        },
+                        rangeSelector: {
+                                selected: 1
+                        },
+                        series: [{
+                                type: "candlestick",
+                                name: ticker + " Stock Price",
+                                data: data,
+                                dataGrouping: {
+                                        units: [
+                                                ["week", [1]],
+                                                ["month", [1,2,3,4,6]]
+                                        ]
+                                }
+                        }]
+                });
+        }
+
 
 	/*
 	* web socket for trade booking

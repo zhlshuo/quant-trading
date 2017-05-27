@@ -15,3 +15,11 @@ margin-bottom
 	height:400px;
 	width:450px;
 }
+
+#price_chart_with_trend
+{
+        margin-left:auto;
+        margin-right:auto;
+        height:400px;
+        width:450px;
+}

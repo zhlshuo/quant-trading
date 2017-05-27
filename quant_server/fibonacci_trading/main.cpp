@@ -11,8 +11,8 @@ int main()
 {
 	CppCallPy cpp_call_py;
 
-	vector<int> x = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-	vector<int> y = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	vector<int> x = {1, 2, 3, 4, 5};
+	vector<int> y = {1, 2, 3, 4, 5};
 	
 	PyObject* arg1 = Py_BuildValue(("O"), vector_to_py_list(x));
 	PyObject* arg2 = Py_BuildValue(("O"), vector_to_py_list(y));	
@@ -21,8 +21,10 @@ int main()
         PyTuple_SetItem(args, 1, arg2);
 
 	double slop, shift;
-	tie(slop, shift) = PyList_AsTuple(cpp_call_py.call("linear_regression", "linear_regression", args));
-	cout << "Slop:" << slop << endl << "Shift:" << shift << endl;
+	PyObject* result = PyList_AsTuple(cpp_call_py.call("linear_regression", "linear_regression", args));
+	//slop = PyFloat_AsDouble(PyList_GetItem(result, 0));
+	//shift = PyFloat_AsDouble(PyList_GetItem(result, 1));
+	//cout << "Slop:" << slop << endl << "Shift:" << shift << endl;
 	/*RetracementLevel rl;
 	rl.init();
 	unordered_map<string, vector<pair<string, double>>> symbol_closes = rl.test_data();
