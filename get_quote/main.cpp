@@ -9,6 +9,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/range/iterator_range.hpp>
 #include <ctime>
+#include "cpp_call_python.hpp"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ vector<string> get_tickers()
 	return tickers;
 }
 
-int update_quotes(vector<string> tickers, long long st_date, long long ed_date)
+int update_stock_quotes(vector<string> tickers, long long st_date, long long ed_date)
 {
 	vector<vector<string>> insert_values;
 	string query = "";
@@ -95,22 +96,27 @@ int main(int argc, const char * argv[]) {
 	long long start_date = stoll(argv[1]);
         long long end_date   = stoll(argv[2]);
 	
-	//long long start_date = 20150101;
-        //long long end_date   = 20161130;
-
         cout << start_date << " to " << end_date << endl;
 
-	auto tickers = get_tickers();
- 	update_quotes(tickers, start_date, end_date);
+	// upate stock quotes
+	auto stock_tickers = get_tickers();
+ 	update_stock_quotes(stock_tickers, start_date, end_date);
 
 	// latest quote
-	/*string petr4Quotes = quote::getLatestQuotesCsv("MSFT", {quote::QuoteType::symbol,
-                                                                quote::QuoteType::name,
-                                                                quote::QuoteType::lastTradePriceOnly,
-                                                                quote::QuoteType::lastTradeDate,
-                                                                quote::QuoteType::lastTradeTime});
-	cout << petr4Quotes << endl;
-	cout << tickers.size() << " " << tickers[0] << endl;*/
+	/*try
+	{
+		string petr4Quotes = quote::getLatestQuotesCsv("GOOG", {quote::QuoteType::symbol,
+                	                                                quote::QuoteType::name,
+                        	                                        quote::QuoteType::lastTradePriceOnly,
+                                	                                quote::QuoteType::lastTradeDate,
+                                        	                        quote::QuoteType::lastTradeTime});
+		cout << petr4Quotes << endl;
+	}
+	catch(...)
+	{
+		cout << "Failed to download MSQJG" << endl;
+	}
+	//cout << tickers.size() << " " << tickers[0] << endl;*/
 	
 	cout << "finish" << endl;
 
