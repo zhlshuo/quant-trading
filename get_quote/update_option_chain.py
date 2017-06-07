@@ -45,17 +45,20 @@ def update_option_chain():
     dt_columns = ['expiration', 'lastTradeDate']
     
     for ticker in scrape_list():
-        option = Options(ticker, 'yahoo')
-        
-        option_chain = option.get_all_data()
-        stmt = 'INSERT INTO OptionQuotes VALUES (' + ','.join(['%s']*len(columns)) + ')'
-        for option in option_chain['JSON'].tolist():
-            option['pricingDate'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
-            print 'update', ticker, 'with values: ', values
-            x.execute(stmt, tuple(values))
-        
+        try:
+            option = Options(ticker, 'yahoo')
+            
+            option_chain = option.get_all_data()
+            stmt = 'INSERT INTO OptionQuotes VALUES (' + ','.join(['%s']*len(columns)) + ')'
+            for option in option_chain['JSON'].tolist():
+                option['pricingDate'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
+                print 'update', ticker, 'with values: ', values
+                x.execute(stmt, tuple(values))
+        except Exception as e:
+            print 'failed to update', ticker, 'becasue:', str(e)
     conn.commit()
+    
     
     conn.close()
     
