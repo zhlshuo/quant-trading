@@ -40,24 +40,22 @@ def update_option_chain():
     
     columns = ['ask', 'bid', 'change', 'contractSize', 'contractSymbol', 'currency', 'expiration', 
                'impliedVolatility', 'inTheMoney', 'lastPrice', 'lastTradeDate', 'openInterest', 'percentChange', 
-               'strike', 'volume']
+               'strike', 'volume', 'pricingDate']
     
     dt_columns = ['expiration', 'lastTradeDate']
-    try:
-        for ticker in scrape_list():
-            option = Options(ticker, 'yahoo')
-            
-            option_chain = option.get_all_data()
-            stmt = 'INSERT INTO OptionQuotes VALUES (' + ','.join(['%s']*len(columns)) + ')'
-            for option in option_chain['JSON'].tolist():
-                print(option)
-                values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
-                values.append(datetime.datetime.now.strftime('%Y-%m-%d %H:%M:%S'))
-                x.execute(stmt, tuple(values))
-        conn.commit()
-    except Exception as e:
-        conn.rollback()
-        raise(e)
+    
+    for ticker in scrape_list():
+        option = Options(ticker, 'yahoo')
+        
+        option_chain = option.get_all_data()
+        stmt = 'INSERT INTO OptionQuotes VALUES (' + ','.join(['%s']*len(columns)) + ')'
+        for option in option_chain['JSON'].tolist():
+            option['pricingDate'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
+            print 'update', ticker, 'with values: ', values
+            x.execute(stmt, tuple(values))
+        
+    conn.commit()
     
     conn.close()
     
