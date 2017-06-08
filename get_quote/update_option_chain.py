@@ -40,7 +40,7 @@ def update_option_chain():
     
     columns = ['ask', 'bid', 'change', 'contractSize', 'contractSymbol', 'currency', 'expiration', 
                'impliedVolatility', 'inTheMoney', 'lastPrice', 'lastTradeDate', 'openInterest', 'percentChange', 
-               'strike', 'volume', 'pricingDate']
+               'strike', 'volume', 'pricingDate', 'underlying', 'underlyingPrice']
     
     dt_columns = ['expiration', 'lastTradeDate']
     
@@ -50,8 +50,10 @@ def update_option_chain():
             
             option_chain = option.get_all_data()
             stmt = 'INSERT INTO OptionQuotes VALUES (' + ','.join(['%s']*len(columns)) + ')'
-            for option in option_chain['JSON'].tolist():
-                option['pricingDate'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            for index, option in enumerate(option_chain['JSON'].tolist()):
+                option['pricingDate']     = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                option['underlying']      = option_chain.iloc[index]['Underlying']
+                option['underlyingPrice'] = option_chain.iloc[index]['Underlying_Price']
                 values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
                 print 'update', ticker, 'with values: ', values
                 x.execute(stmt, tuple(values))
