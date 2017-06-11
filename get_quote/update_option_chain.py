@@ -40,7 +40,7 @@ def update_option_chain():
     
     columns = ['ask', 'bid', 'change', 'contractSize', 'contractSymbol', 'currency', 'expiration', 
                'impliedVolatility', 'inTheMoney', 'lastPrice', 'lastTradeDate', 'openInterest', 'percentChange', 
-               'strike', 'volume', 'pricingDate', 'underlying', 'underlyingPrice']
+               'strike', 'volume', 'pricingDate', 'underlying', 'underlyingPrice', 'type', 'mid']
     
     dt_columns = ['expiration', 'lastTradeDate']
     
@@ -54,6 +54,8 @@ def update_option_chain():
                 option['pricingDate']     = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 option['underlying']      = option_chain.iloc[index]['Underlying']
                 option['underlyingPrice'] = option_chain.iloc[index]['Underlying_Price']
+                option['type']            = 'call' if (option['underlyingPrice'] > option['strike'] and option['inTheMoney']) or (option['underlyingPrice'] < option['strike'] and not option['inTheMoney']) else 'put'
+                option['mid'] = (option['ask'] + option['bid'])/2.
                 values = [option[column] if column not in dt_columns else datetime.datetime.fromtimestamp(option[column]).strftime('%Y-%m-%d %H:%M:%S') for column in columns]
                 print 'update', ticker, 'with values: ', values
                 x.execute(stmt, tuple(values))
