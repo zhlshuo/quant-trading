@@ -78,8 +78,8 @@ int update_stock_quotes(vector<string> tickers, long long st_date, long long ed_
 				// add the record to values inserted
 				insert_values.push_back(insert_value);
 			}
-                }catch(...){
-                        cout << "failed to get quotes for ticker " << tickers[ticker_index] << endl;
+                }catch(const std::exception &exc){
+                        cout << "failed to get quotes for ticker " << tickers[ticker_index] << " because:" << exc.what() << endl;
                 }
         }
 
@@ -100,10 +100,10 @@ int main(int argc, const char * argv[]) {
 
 	// upate stock quotes
 	auto stock_tickers = get_tickers();
- 	update_stock_quotes(stock_tickers, start_date, end_date);
+ 	//update_stock_quotes(stock_tickers, start_date, end_date);
 
 	// latest quote
-	/*try
+	try
 	{
 		string petr4Quotes = quote::getLatestQuotesCsv("GOOG", {quote::QuoteType::symbol,
                 	                                                quote::QuoteType::name,
@@ -112,9 +112,9 @@ int main(int argc, const char * argv[]) {
                                         	                        quote::QuoteType::lastTradeTime});
 		cout << petr4Quotes << endl;
 	}
-	catch(...)
+	catch(const std::exception &exc)
 	{
-		cout << "Failed to download MSQJG" << endl;
+		cout << "Failed to download GOOG" << endl;
 	}
 	//cout << tickers.size() << " " << tickers[0] << endl;*/
 	

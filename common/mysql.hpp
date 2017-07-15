@@ -29,6 +29,8 @@ private:
 	static MysqlManager *instance;
 	static Configuration* config;
 
+public:
+	// keep the constructor public to enable multiple threads update one table
 	MysqlManager():mysql_server(config->server),mysql_user(config->db_username),mysql_pwd(config->db_password),database(config->db_name),con(NULL){
                 driver = sql::mysql::get_driver_instance();
                 con = driver->connect(mysql_server, mysql_user, mysql_pwd);
